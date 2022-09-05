@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .news-list {
+            width: 200px;
+            height: 200px;
+            background-color: pink;
+            overflow: auto;
+        }
+
+        .news {
+            width: 200px;
+            height: 40px;
+            border-bottom: 1px solid green;
+            line-height: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="test"></div>
+    <!-- 新版本 -->
+    <!-- 引入react核心库 -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <!-- 引入react-dom,用于支持react操作DOM -->
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <!-- 引入babel，用于将jsx转为js -->
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+
+    <script type="text/babel">
+        // 创建组件
+        class NewsList extends React.Component {
+            // 初始化状态
+            state = { newsArr: [] }
+
+            // 组件挂载完成时调用
+            componentDidMount() {
+                setInterval(() => {
+                    const { newsArr } = this.state
+                    // 获取新一条新闻
+                    var news = "新闻" + (newsArr.length + 1)
+                    // 设置状态
+                    this.setState({ newsArr: [news, ...newsArr] })
+                }, 1000)
+            }
+
+            getSnapshotBeforeUpdate(){
+                return this.refs.list.scrollHeight
+            }
+
+            componentDidUpdate(preProps, preState, height){
+                this.refs.list.scrollTop += this.refs.list.scrollHeight - height
+            }
+
+            render() {
+                return (
+                    <div className="news-list" ref="list">
+                        {
+                            this.state.newsArr.map((item, index) => {
+                                return <div className="news" key={index}>{item}</div>
+                            })
+                        }
+                    </div>
+                )
+            }
+        }
+
+        // 渲染组件
+        ReactDOM.render(<NewsList />, document.getElementById("test"))
+
+    </script>
+</body>
+
+</html>

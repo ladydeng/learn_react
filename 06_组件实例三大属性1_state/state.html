@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="test"></div>
+
+    <!-- 引入react核心库 -->
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <!-- 引入react-dom,用于支持react操作DOM -->
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <!-- 引入babel，用于将jsx转为js -->
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+
+    <script type="text/babel">
+        // 1.创建类式组件
+    class Weather extends React.Component{
+        constructor(props){
+            super(props)
+            this.state = {isHot:true}
+            // 解决changWeather中this的指向问题
+            this.changeWeather = this.changeWeather.bind(this)
+        }
+
+        changeWeather(){
+            // 由于changeWeather作为onchangeWeather的回调，是直接调用的，没有经过实例调用，所以this指向不是Weather实例对象
+            // 由于类里面的函数默认开启了严格模式，所以这个的this为undefined
+            // console.log(this)
+
+            // 状态必须通过setState更新，且更新是一种合并，不是替换
+            // this.state.isHot = !this.state.isHot //这种写法错误
+            // 获取isHot的值
+            const isHot = this.state.isHot
+            this.setState({ isHot : !isHot })
+       }
+
+       render(){
+            // 读取状态
+            // 结构
+            const { isHot } = this.state
+            // const isHot = this.state.isHot
+            return <h1 onClick={ this.changeWeather }>今天天气{isHot? '炎热' : '凉爽'}</h1>
+        }
+    }
+
+    // 渲染组件到页面
+    ReactDOM.render(<Weather/>, document.getElementById('test'))
+
+</script>
+</body>
+
+</html>

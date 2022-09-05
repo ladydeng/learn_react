@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="test"></div>
+
+    <!-- 引入react核心库 -->
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <!-- 引入react-dom,用于支持react操作DOM -->
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <!-- 引入babel，用于将jsx转为js -->
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+
+    <script type="text/babel">
+        // 创建组件
+        class Demo extends React.Component {
+            showData1 = () => {
+                // console.log(this)这里的this是组件实例对象
+                const { input1 } = this.refs
+                console.log(input1.value)
+            }
+
+            showData2 = () =>{
+                const { input2 } = this.refs
+                console.log(input2.value)
+            }
+
+            render() {
+                return (
+                    <div>
+                        <input type="text" ref="input1" placeholder="点击按钮提示数据" />&nbsp;
+                        <button onClick={this.showData1}>点击我提示左边输入框数据</button>&nbsp;
+                        <input onBlur={this.showData2} ref="input2" type="text" placeholder="失去焦点提示数据" />
+                    </div>
+
+                )
+            }
+        }
+
+        // 渲染组件到DOM
+        ReactDOM.render(<Demo />, document.getElementById("test"))
+    </script>
+</body>
+
+</html>

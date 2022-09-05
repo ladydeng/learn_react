@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .child {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="test"></div>
+    <!-- 新版本 -->
+    <!-- 引入react核心库 -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <!-- 引入react-dom,用于支持react操作DOM -->
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <!-- 引入babel，用于将jsx转为js -->
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+
+    <script type="text/babel">
+        // 创建组件
+        class Increase extends React.Component {
+            constructor(props) {
+                console.log("increase----constructor")
+                super(props)
+            }
+            // 初始化状态
+            state = { count: 0 }
+
+            sum = () => {
+                const { count } = this.state
+                this.setState({ count: count + 1 })
+            }
+
+            force = () => {
+                // 强制更新，不受阀门控制
+                this.forceUpdate()
+            }
+
+            uninstall = () => {
+                // 卸载组件
+                ReactDOM.unmountComponentAtNode(document.getElementById("test"))
+            }
+
+
+            // 若state值在任何时候都取决于props，那么可以使用getDerivedStateFromProps
+            static getDerivedStateFromProps(props, state) {
+                console.log("getDerivedStateFromProps", props, state)
+                // return { count:99 }  //重新给count定义值，且不可更改，此钩子不常用
+                return null
+            }
+
+            getSnapshotBeforeUpdate() {
+                console.log("getSnapshotBeforeUpdate")
+                return "张三" // 可返回任何值
+                // return null
+            }
+
+            // 组件挂载前
+            //  UNSAFE_componentWillMount() {
+            //     console.log("increase----componentWillMount")
+            // }
+
+
+            // 组件挂载完成
+            componentDidMount() {
+                console.log("increase----componentDidMount")
+            }
+
+            // 阀门,控制是否要更新DOM，不写这个生命周期函数时默认返回true，写了这个函数就必须有一个BOOLEAN返回值，
+            shouldComponentUpdate() {
+                console.log("increase----shouldComponentUpdate")
+                return true
+            }
+
+            // 组件更新前
+            // UNSAFE_componentWillUpdate() {
+            //     console.log("increase----componentWillUpdate")
+            // }
+
+            // 组件更新完成
+            componentDidUpdate(preProps, preState, snapshotValue) {
+                console.log("increase----componentDidUpdate", preProps, preState, snapshotValue)
+            }
+
+            // 当组件将要被卸载时
+            componentWillUnmount() {
+                console.log("increase----componentWillUnmount")
+            }
+
+
+
+            render() {
+                console.log("increase----render")
+                const { count } = this.state
+                return (
+                    <div className="child">
+                        <h1>结果为:{count}</h1>
+                        <button onClick={this.sum}>点击+1</button>
+                        <button onClick={this.force}>强制更新</button>
+                        <button onClick={this.uninstall}>卸载组件</button>
+                    </div>
+                )
+            }
+        }
+
+        class A extends React.Component {
+            state = { carName: "奔驰" }
+
+            changeCar = () => {
+                this.setState({ carName: "奥拓" })
+            }
+
+            render() {
+                const { carName } = this.state
+                return (
+                    <div>
+                        <p>我是A组件</p>
+                        <button onClick={this.changeCar}>点击换车</button>
+                        <p>------------</p>
+                        <B carName={carName} />
+                    </div>
+                )
+            }
+        }
+
+        class B extends React.Component {
+            //当组件将要接收新的props时调用
+            // UNSAFE_componentWillReceiveProps(props){
+            //     console.log("increase----componentWillReceiveProps",props)
+            // }
+
+            render() {
+                return (
+                    <div>我是B组件，我的车是{this.props.carName}</div>
+                )
+            }
+        }
+
+        // 挂载组件
+        ReactDOM.render(<Increase name="tom" />, document.getElementById("test"))
+    </script>
+</body>
+
+</html>

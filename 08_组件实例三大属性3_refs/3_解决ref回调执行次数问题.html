@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="test"></div>
+
+    <!-- 引入react核心库 -->
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <!-- 引入react-dom,用于支持react操作DOM -->
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <!-- 引入babel，用于将jsx转为js -->
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+
+    <script type="text/babel">
+        // 创建组件
+        class Demo extends React.Component {
+            // 初始化状态
+            state = { isHot: true }
+
+            changeWeather = () => {
+                const { isHot } = this.state
+                this.setState({ isHot: !isHot })
+            }
+
+            setRef = (node) => {
+                this.input1 = node
+                console.log(node)
+            }
+
+            render() {
+                const { isHot } = this.state
+                return (
+                    <div>
+                        <p>今天天气{isHot ? "炎热" : "凉爽"}</p>
+                        {/*1.下面这种回调设置ref的方法，回调函数的函数体，在更新的时候更新一次会执行两次，且第一次为null*/}
+                        {/*<input type="text" ref={node => { this.input1 = node; console.log(node) }} placeholder="点击按钮提示数据" />*/}
+                        {/*2.解决ref回调执行次数问题*/}
+                        <input type="text" ref={this.setRef} placeholder="点击按钮提示数据" />
+                        <br /><br />
+                        <button onClick={this.showData1}>点击我提示数据</button>
+                        <button onClick={this.changeWeather}>点击改变天气</button>
+                    </div>
+
+                )
+            }
+        }
+
+        // 渲染组件到DOM
+        ReactDOM.render(<Demo />, document.getElementById("test"))
+    </script>
+</body>
+
+</html>

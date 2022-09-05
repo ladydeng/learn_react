@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>非受控组件（现用现取）</title>
+</head>
+
+<body>
+    <divsa id="test">
+        </div>
+
+        <!--sa 引入react核心库 -->
+        <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js">
+        </script>
+        <!-- 引入react-dom,用于支持react操作DOM -->
+        <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+        <!-- 引入babel，用于将jsx转为js -->
+        <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+
+        <script type="text/babel">
+        // 创建组件
+            class Login extends React.Component {
+
+                login = (e) => {
+                    const { username, password } = this
+                    // 阻止表单的默认行为
+                    e.preventDefault()
+                    alert(`用户名：${username.value}，密码：${password.value}`)
+
+                }
+
+                render() {
+                    return (
+                        <form action="http://www.atguigu.com" onSubmit={this.login}>
+                            用户名：<input type="text" ref={node => this.username = node} name="username"/>
+                            密码：<input type="password" ref={node => this.password = node} name="password"/>
+                            <button>登录</button>
+                        </form>
+                    )
+                }
+            }
+
+            // 渲染组件到DOM
+            ReactDOM.render(<Login/>, document.getElementById("test"))
+
+        </script>
+</body>
+
+</html>

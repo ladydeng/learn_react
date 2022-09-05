@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="test1"></div>
+    <div id="test2"></div>
+
+    <!-- 引入react核心库 -->
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <!-- 引入react-dom,用于支持react操作DOM -->
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <!-- 引入babel，用于将jsx转为js -->
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+
+    <script type="text/babel">
+        // 1.创建类组件
+    class Person extends React.Component {
+        constructor(props){
+            super(props)
+        }
+        render(){
+            const { name, age, sex } = this.props
+            return (
+                <ul>
+                    <li>{ name }</li>
+                    <li>{ age }</li>
+                    <li>{ sex }</li>
+                </ul>
+            )
+        }
+    }
+
+    const p = {name:"lili", age:18, sex:"女"}
+    // 2.渲染组件到页面
+    ReactDOM.render(<Person {...p}/>, document.getElementById("test1"))
+    ReactDOM.render(<Person name="hmm" age={18} sex="女"/>, document.getElementById("test2"))
+
+
+    // ...p1展开运算符在react中仅适用于标签属性的传递
+    // 在js中展开运算符必须要以{...p1}形式使用
+    // const person = {...p1} //复制一个p1对象
+</script>
+</body>
+
+</html>
